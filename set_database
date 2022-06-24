@@ -1,0 +1,101 @@
+-- Script that prepares a MySQL server
+
+-- Drop database
+DROP DATABASE IF EXISTS threecy_db;
+
+CREATE DATABASE IF NOT EXISTS threecy_db;
+CREATE USER IF NOT EXISTS threecy_dev@localhost IDENTIFIED BY 'threecy_dev_pwd';
+GRANT ALL PRIVILEGES ON threecy_db.* TO threecy_dev@localhost;
+GRANT SELECT ON performance_schema.* TO threecy_dev@localhost;
+FLUSH PRIVILEGES;
+
+USE threecy_db;
+
+--
+-- Table structure for table `users`
+--
+CREATE TABLE IF NOT EXISTS `users` (
+    `id` INT NOT NULL,
+    `first_name` VARCHAR(128) NOT NULL,
+    `last_name` VARCHAR(128) NOT NULL,
+    `phone` VARCHAR(45) NOT NULL,
+    `email` VARCHAR(128) NOT NULL,
+    `password` VARCHAR(128) NOT NULL,
+    `country` VARCHAR(128) NOT NULL,
+    `department` VARCHAR(128) NOT NULL,
+    `city` VARCHAR(128) NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
+--
+-- Insert some data for table `users`
+--
+INSERT INTO `users` VALUES
+(100, 'Jhon', 'Smith', '3114569087', 'jhonsmith@email.com', 'd1b126eaad311ab380df0b0c0a444a18', 'Colombia', 'Bogota DC', 'Bogota'),
+(101, 'Jairo', 'Contreras', '3124566087', 'jairocon@email.com', '65d7243e827d9091c7ae13f1b989766a', 'Colombia', 'Bogota DC', 'Bogota'),
+(102, 'Mercedes', 'Bastidas', '3167834612', 'merbas@email.com', '34c22c1ffb0df9bd1f408972419b7ea5', 'Colombia', 'Bogota DC', 'Bogota'),
+(103, 'Marta', 'Sanchez', '3167068612', 'marsan@email.com', '0e4d164a767ed5990a08089020eb696b', 'Colombia', 'Bogota DC', 'Bogota'),
+(104, 'Cristina', 'Ramirez', '3157057612', 'crisram@email.com', '5e4d7d83764037d4894cd7348c65ac02', 'Colombia', 'Bogota DC', 'Bogota');
+
+--
+-- Table structure for table `categories`
+--
+CREATE TABLE IF NOT EXISTS `categories` (
+    `id` INT NOT NULL,
+    `name` VARCHAR(128) UNIQUE NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
+--
+-- Insert some data for table `categories`
+--
+INSERT INTO `categories` VALUES
+(100, 'Plastico'), (101, 'Electrodomesticos'), (102, 'Papel/Carton'),
+(103, 'Aluminio'), (104, 'Hierro'), (105, 'Muebles'), (106, 'Madera');
+
+--
+-- Table structure for table `products`
+--
+CREATE TABLE IF NOT EXISTS `products` (
+    `id` INT NOT NULL,
+    `name` VARCHAR(128) NOT NULL,
+    `categoryId` INT NOT NULL,
+    `userId` INT NOT NULL,
+    `unitPrice` INT(15),
+    `status` VARCHAR(15),
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`categoryId`) REFERENCES `categories`(`id`),
+    FOREIGN KEY (`userId`) REFERENCES `users`(`id`)
+);
+
+--
+-- Insert some data for table `products`
+--
+INSERT INTO `products` VALUES
+(100, 'Botellas de gaseosa', 100, 102, 500, 'available', now()),
+(101, 'Botellas de gaseosa', 100, 101, 400, 'available', now()),
+(102, 'Juego Comedor', 105, 102, 100000, 'available', now()),
+(103, 'Cafetera', 101, 101, 50000, 'available', now()),
+(104, 'Nevera', 101, 103, 80000, 'available', now()),
+(105, 'Nevera', 101, 104, 50000, 'available', now());
+
+--
+-- Table structure for table `transactions`
+--
+CREATE TABLE IF NOT EXISTS `transactions` (
+    `id` INT NOT NULL,
+    `sellerId` INT NOT NULL,
+    `buyerId` INT NOT NULL,
+    `productId` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`sellerId`) REFERENCES `users`(`id`),
+    FOREIGN KEY (`buyerId`) REFERENCES `users`(`id`),
+    FOREIGN KEY (`productId`) REFERENCES `products`(`id`)
+);
+
+--
+-- Insert some data for table `transactions`
+--
+INSERT INTO `transactions` VALUES
+(100, 102, 100, 100), (101, 104, 101, 105), (102, 103, 102, 104);
