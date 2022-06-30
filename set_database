@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `first_name` VARCHAR(128) NOT NULL,
     `last_name` VARCHAR(128) NOT NULL,
     `phone` VARCHAR(45) NOT NULL,
-    `email` VARCHAR(128) NOT NULL,
+    `email` VARCHAR(128) NOT NULL UNIQUE,
     `password` VARCHAR(128) NOT NULL,
     `country` VARCHAR(128) NOT NULL,
     `department` VARCHAR(128) NOT NULL,
@@ -60,9 +60,11 @@ CREATE TABLE IF NOT EXISTS `products` (
     `id` INT NOT NULL,
     `name` VARCHAR(128) NOT NULL,
     `categoryId` INT NOT NULL,
+    `description` VARCHAR,
     `userId` INT NOT NULL,
     `unitPrice` INT(15),
     `status` VARCHAR(15),
+    `image` VARCHAR,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`categoryId`) REFERENCES `categories`(`id`),
@@ -83,13 +85,12 @@ INSERT INTO `products` VALUES
 --
 -- Table structure for table `transactions`
 --
-CREATE TABLE IF NOT EXISTS `transactions` (
+CREATE TABLE IF NOT EXISTS `offers` (
     `id` INT NOT NULL,
-    `sellerId` INT NOT NULL,
     `buyerId` INT NOT NULL,
     `productId` INT NOT NULL,
+    `status` VARCHAR(15),
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`sellerId`) REFERENCES `users`(`id`),
     FOREIGN KEY (`buyerId`) REFERENCES `users`(`id`),
     FOREIGN KEY (`productId`) REFERENCES `products`(`id`)
 );
@@ -97,5 +98,5 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 --
 -- Insert some data for table `transactions`
 --
-INSERT INTO `transactions` VALUES
-(100, 102, 100, 100), (101, 104, 101, 105), (102, 103, 102, 104);
+INSERT INTO `offers` VALUES
+(100, 100, 100, 'pending'), (101, 101, 105, 'pending'), (102, 102, 104, 'pending');

@@ -1,4 +1,4 @@
 env_tree/
 transfer_me
 script_set_server
-threecyclingapp/threecyclingapp/settings.py
+threecyclingapp/threecyclingapp/.env
