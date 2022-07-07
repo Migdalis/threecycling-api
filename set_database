@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `first_name` VARCHAR(128) NOT NULL,
     `last_name` VARCHAR(128) NOT NULL,
     `phone` VARCHAR(45) NOT NULL,
-    `email` VARCHAR(128) NOT NULL UNIQUE,
+    `email` VARCHAR(128) UNIQUE NOT NULL,
     `password` VARCHAR(128) NOT NULL,
     `country` VARCHAR(128) NOT NULL,
     `department` VARCHAR(128) NOT NULL,
@@ -60,11 +60,11 @@ CREATE TABLE IF NOT EXISTS `products` (
     `id` INT NOT NULL,
     `name` VARCHAR(128) NOT NULL,
     `categoryId` INT NOT NULL,
-    `description` VARCHAR,
+    `description` VARCHAR(255),
     `userId` INT NOT NULL,
     `unitPrice` INT(15),
     `status` VARCHAR(15),
-    `image` VARCHAR,
+    `image` VARCHAR(255),
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`categoryId`) REFERENCES `categories`(`id`),
@@ -75,12 +75,12 @@ CREATE TABLE IF NOT EXISTS `products` (
 -- Insert some data for table `products`
 --
 INSERT INTO `products` VALUES
-(100, 'Botellas de gaseosa', 100, 102, 500, 'available', now()),
-(101, 'Botellas de gaseosa', 100, 101, 400, 'available', now()),
-(102, 'Juego Comedor', 105, 102, 100000, 'available', now()),
-(103, 'Cafetera', 101, 101, 50000, 'available', now()),
-(104, 'Nevera', 101, 103, 80000, 'available', now()),
-(105, 'Nevera', 101, 104, 50000, 'available', now());
+(100, 'Botellas de gaseosa', 100, '', 102, 500, 'available', 'not found', now()),
+(101, 'Botellas de gaseosa', 100, '', 101, 400, 'available', 'not found', now()),
+(102, 'Juego Comedor', 105, '', 102, 100000, 'available', 'not found', now()),
+(103, 'Cafetera', 101, '', 101, 50000, 'available', 'not found', now()),
+(104, 'Nevera', 101, '', 103, 80000, 'available', 'not found', now()),
+(105, 'Nevera', 101, '', 104, 50000, 'available', 'not found', now());
 
 --
 -- Table structure for table `transactions`
